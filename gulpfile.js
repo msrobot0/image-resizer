@@ -29,7 +29,7 @@ gulp.task('lint:watch', ['lint'], function(){
 
 gulp.task('test', function () {
   gulp.src('test/**/*.js')
-    .pipe(mocha({reporter: 'nyan'}))
+    .pipe(mocha({reporter: 'spec'}))
     .on('error', function(err){
       console.log(err.toString());
       this.emit('end');
