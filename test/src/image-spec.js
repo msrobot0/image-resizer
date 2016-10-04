@@ -108,6 +108,14 @@ describe('Image class', function(){
         img.path.should.equal('path/to/' + image);
       });
 
+      it('should still get output format from bcalla file name', function(){
+        var image = '/epaomassets-h1480/yadayada/BCALLA_TSJACKET.png',
+            img = new Img({path: image + '.webp'});
+        img.outputFormat.should.equal('webp');
+        img.image.should.equal('BCALLA_TSJACKET.png');
+        img.path.should.equal('yadayada/BCALLA_TSJACKET.png');
+      });
+
     });
   });
 
