@@ -115,7 +115,6 @@ describe('Image class', function(){
         img.image.should.equal('BCALLA_TSJACKET.png');
         img.path.should.equal('yadayada/BCALLA_TSJACKET.png');
       });
-
     });
   });
 

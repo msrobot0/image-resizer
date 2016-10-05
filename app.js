@@ -1,13 +1,11 @@
 'use strict';
+const express = require('express');
+const ir      = require('.');
 
-var express, app, ir, env, Img, streams;
-
-express = require('express');
-app     = express();
-ir      = require('image-resizer');
-env     = ir.env;
-Img     = ir.img;
-streams = ir.streams;
+const Img     = ir.img;
+const app     = express();
+const env     = ir.env;
+const streams = ir.streams;
 
 app.directory = __dirname;
 ir.expressConfig(app);
@@ -62,4 +60,7 @@ app.get('/*?', function(request, response){
 /**
 Start the app on the listed port
 */
-app.listen(app.get('port'));
+const port = app.get('port');
+app.listen(port, function () {
+  console.log('Listening on port ', port);
+});
