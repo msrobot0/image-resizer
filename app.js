@@ -1,65 +1,63 @@
-'use strict';
+'se strict';
 const express = require('express');
-const ir      = require('.');
+const imageResizer      = require('.');
 
-const Img     = ir.img;
 const app     = express();
-const env     = ir.env;
-const streams = ir.streams;
+const Img     = imageResizer.img;
+const env     = imageResizer.env;
+const streams = imageResizer.streams;
 
 app.directory = __dirname;
-ir.expressConfig(app);
+imageResizer.expressConfig(app);
 
 app.get('/favicon.ico', function (request, response) {
   response.sendStatus(404);
 });
 
-/**
-Return the modifiers map as a documentation endpoint
-*/
-app.get('/modifiers.json', function(request, response){
-  response.json(ir.modifiers);
+// Show supported modifiers
+app.get('/modifiers.json', function (request, response) {
+  response.json(imageResizer.modifiers);
 });
 
-
-/**
-Some helper endpoints when in development
-*/
-if (env.development){
+if (env.development) {
   // Show a test page of the image options
-  app.get('/test-page', function(request, response){
+  app.get('/test-page', function (request, response) {
     response.render('index.html');
   });
 
   // Show the environment variables and their current values
-  app.get('/env', function(request, response){
+  app.get('/env', function (request, response) {
     response.json(env);
   });
 }
 
+// GET images
+app.get('/*?', function (req, res, next) {
+  if (req.path === '/') return next();
 
-/*
-Return an image modified to the requested parameters
-  - request format:
-    /:modifers/path/to/image.format:metadata
-    eg: https://my.cdn.com/s50/sample/test.png
-*/
-app.get('/*?', function(request, response){
-  var image = new Img(request);
-
+  const image = new Img(req);
   image.getFile()
     .pipe(new streams.identify())
     .pipe(new streams.normalize())
     .pipe(new streams.resize())
     .pipe(new streams.filter())
     .pipe(new streams.optimize())
-    .pipe(streams.response(request, response));
+    .pipe(streams.response(req, res));
 });
 
+app.use((req, res, next) => {
+  const err = new Error('Not found');
+  err.status = 404;
+  next(err);
+});
 
-/**
-Start the app on the listed port
-*/
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.json({
+    error: err.message,
+  });
+});
+
 const port = app.get('port');
 app.listen(port, function () {
   console.log('Listening on port ', port);
