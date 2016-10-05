@@ -2,7 +2,6 @@
   "name": "image-resizer",
   "version": "1.6.0",
   "description": "On-the-fly image resizing and optimization using node and sharp (libvips). Heroku ready!",
-  "bin": "./app.js",
   "main": "index.js",
   "scripts": {
     "test": "gulp test"
@@ -20,7 +19,8 @@
   "license": "MIT",
   "repository": "git://github.com/jimmynicol/image-resizer",
   "bin": {
-    "image-resizer": "./bin/image_resizer.js"
+    "image-resizer": "./bin/image_resizer.js",
+    "image-resizer-server": "./app.js"
   },
   "engines": {
     "node": "0.12.x"
