@@ -36,7 +36,7 @@ function Image(request) {
   this.parseImage(request);
 
   // determine the requested modifications
-  this.modifiers = modifiers.parse(request.path);
+  this.modifiers = modifiers.parse(request.path, null, null, request.query);
 
   // pull the various parts needed from the request params
   this.parseUrl(request);
@@ -61,8 +61,8 @@ Image.validOutputFormats = ['jpeg', 'png', 'webp'];
 Image.prototype.parseImage = function(request){
   const parts = request.path.split('/');
   this.image = _.last(parts);
-  this.format = request.query.format;
-  this.outputFormat = request.query.outputFormat;
+  this.format = request.query.format || '';
+  this.outputFormat = request.query.outputFormat || '';
 };
 
 // Determine the file path for the requested image

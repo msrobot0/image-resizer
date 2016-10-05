@@ -287,9 +287,9 @@ var limitMaxDimension = function(mods, env){
 // Exposed method to parse an incoming URL for modifiers, can add a map of
 // named (preset) modifiers if need be (mostly just for unit testing). Named
 // modifiers are usually added via config json file in root of application.
-exports.parse = function(requestUrl, namedMods, envOverride){
+exports.parse = function(requestUrl, namedMods, envOverride, query) {
   // override 'env' for testing
-  if(typeof envOverride !== 'undefined'){
+  if(envOverride != null) {
     env = _.clone(envOverride);
   } else {
     env = _.clone(environment);
@@ -308,12 +308,12 @@ exports.parse = function(requestUrl, namedMods, envOverride){
 
   // set the mod keys and defaults
   mods = {
-    action: 'original',
-    height: null,
-    width: null,
-    gravity: gravity.default,
-    crop: crop.default,
-    quality: quality.default,
+    action: query.action || 'original',
+    height: !isNaN(+query.height) ? +query.height : null,
+    width: !isNaN(+query.width) ? +query.width : null,
+    gravity: query.gravity || gravity.default,
+    crop: query.crop || crop.default,
+    quality: query.quality || quality.default,
     hasModStr: false
   };
 
