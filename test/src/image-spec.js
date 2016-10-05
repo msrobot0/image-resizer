@@ -108,7 +108,7 @@ describe('Image class', function(){
         img.path.should.equal('path/to/' + image);
       });
 
-      it('should still get output format from bcalla file name', function(){
+      it('should still get output format from uppercase file names', function(){
         var image = '/epaomassets-h1480/yadayada/BCALLA_TSJACKET.png',
             img = new Img({path: image + '.webp'});
         img.outputFormat.should.equal('webp');
