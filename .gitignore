@@ -5,4 +5,5 @@ node_modules/
 ./sources/
 npm-debug.log
 named_modifiers.json
-test/sample_images/dont-version*
+test/sample_images/dont-version*/process.yml
+/process.yml
