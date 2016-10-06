@@ -1,10 +1,16 @@
 'use strict';
+const fs = require('fs');
+const stream = require('stream');
+const env = require('../config/environment_vars');
+const util = require('util');
 
-var fs     = require('fs');
-var stream = require('stream');
-var env    = require('../config/environment_vars');
-var util   = require('util');
-
+let client = {
+  captureException: () => {},
+};
+if (process.env.SENTRY_DSN) {
+  const raven = require('raven');
+  client = new raven.Client(process.env.SENTRY_DSN);
+}
 
 function ResponseWriter(request, response){
   if (!(this instanceof ResponseWriter)){
@@ -44,7 +50,16 @@ ResponseWriter.prototype._write = function(image){
       fs.createReadStream(env.IMAGE_404).pipe(this.response);
     }
     else {
-      this.response.status(statusCode).end();
+      this.response.status(statusCode);
+      this.response.json({
+        error: image.error.message,
+        stack: image.error.stack,
+      });
+      client.captureException(image.error, {
+        meta: {
+          url: this.request.path,
+        }
+      });
     }
 
     return;
