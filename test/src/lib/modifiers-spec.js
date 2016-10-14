@@ -15,8 +15,10 @@ describe('Modifiers module', function(){
   // Metadata calls
   describe('Metadata request', function(){
     it('should recognise a metadata call', function(){
-      var request = '/path/to/image.png.json';
-      mod.parse(request).action.should.equal('json');
+      var request = '/path/to/image.png';
+      mod.parse(request, null, null, {
+        action: 'json',
+      }).action.should.equal('json');
     });
 
     it('should disregard modifiers in a metadata call', function(){

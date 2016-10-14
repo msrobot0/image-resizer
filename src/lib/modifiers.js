@@ -295,6 +295,10 @@ exports.parse = function(requestUrl, namedMods, envOverride, query) {
     env = _.clone(environment);
   }
 
+  if (query == null) {
+    query = {};
+  }
+
   var segments, mods, modStr, image, gravity, crop, quality;
 
   gravity   = getModifier('g');
