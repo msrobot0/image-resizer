@@ -19,6 +19,7 @@ function Logger(){
 Logger.prototype.colors = chalk;
 
 Logger.prototype.log = function(){
+  if (process.env.NODE_ENV === 'production') return;
   args = slice.call(arguments);
   if (this.queueLog){
     this.queue.push({ method: 'log',  args: args });
@@ -29,6 +30,7 @@ Logger.prototype.log = function(){
 };
 
 Logger.prototype.error = function(){
+  if (process.env.NODE_ENV === 'production') return;
   args = slice.call(arguments);
   if (this.queueLog){
     this.queue.push({ method: 'error', args: args });
@@ -39,6 +41,7 @@ Logger.prototype.error = function(){
 };
 
 Logger.prototype.time = function(key){
+  if (process.env.NODE_ENV === 'production') return;
   if (this.queueLog){
     this.times[key] = Date.now();
   } else {
@@ -48,6 +51,7 @@ Logger.prototype.time = function(key){
 };
 
 Logger.prototype.timeEnd = function(key){
+  if (process.env.NODE_ENV === 'production') return;
   if (this.queueLog){
     var time = Date.now() - this.times[key];
     this.queue.push({ method: 'time', key: key, time: time });
@@ -58,6 +62,7 @@ Logger.prototype.timeEnd = function(key){
 };
 
 Logger.prototype.flush = function(){
+  if (process.env.NODE_ENV === 'production') return;
   if (this.queue.length === 0){
     return;
   }
@@ -87,6 +92,5 @@ Logger.prototype.flush = function(){
   });
 
 };
-
 
 module.exports = Logger;
