@@ -1,0 +1,9 @@
+.DS_Store
+node_modules/
+.env
+./filters/
+./sources/
+npm-debug.log
+named_modifiers.json
+test/sample_images/dont-version*/process.yml
+/process.yml
