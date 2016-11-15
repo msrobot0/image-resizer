@@ -4,6 +4,7 @@
   "description": "On-the-fly image resizing and optimization using node and sharp (libvips). Heroku ready!",
   "main": "index.js",
   "scripts": {
+    "start": "node ./app.js",
     "test": "gulp test"
   },
   "keywords": [
