@@ -43,8 +43,10 @@ module.exports = function () {
 
     var r = sharp(image.contents);
 
+    // TODO - Allow configuration through `?upscale=1`
+    //
     // never enlarge an image beyond its original size
-    r.withoutEnlargement();
+    // r.withoutEnlargement();
 
     // if allowed auto rotate images, very helpful for photos off of an iphone
     // which are landscape by default and the metadata tells them what to show.
