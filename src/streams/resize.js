@@ -6,9 +6,8 @@ var env   = require('../config/environment_vars');
 var dims  = require('../lib/dimensions');
 
 
-module.exports = function () {
-
-  return map( function(image, callback) {
+module.exports = function (options = {}) {
+  return map(function(image, callback) {
 
     // do nothing if there is an error on the image object
     if (image.isError()){
@@ -43,10 +42,11 @@ module.exports = function () {
 
     var r = sharp(image.contents);
 
-    // TODO - Allow configuration through `?upscale=1`
-    //
-    // never enlarge an image beyond its original size
-    // r.withoutEnlargement();
+    // Never enlarge an image beyond its original size unless there's an
+    // explicit `?upscale=1` or `?upscale=true` setting
+    if (!options.allowUpscaling) {
+      r.withoutEnlargement();
+    }
 
     // if allowed auto rotate images, very helpful for photos off of an iphone
     // which are landscape by default and the metadata tells them what to show.

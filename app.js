@@ -53,7 +53,12 @@ app.get('/*?', function (req, res, next) {
   image.getFile()
     .pipe(new streams.identify())
     .pipe(new streams.normalize())
-    .pipe(new streams.resize())
+    .pipe(new streams.resize({
+      allowUpscaling:
+        req.query.upscale &&
+          req.query.upscale !== '0' &&
+          req.query.upscale !== 'false',
+    }))
     .pipe(new streams.filter())
     .pipe(new streams.optimize())
     .pipe(streams.response(req, res));
