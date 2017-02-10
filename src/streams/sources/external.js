@@ -15,17 +15,24 @@ function contentLength(bufs){
   }, 0);
 }
 
-function External(image, key, prefix){
-  var regexMatch;
-
+function External(image, key, prefix, url) {
   /* jshint validthis:true */
   if (!(this instanceof External)){
     return new External(image, key, prefix);
   }
+
   stream.Readable.call(this, { objectMode : true });
+
   this.image = image;
   this.ended = false;
   this.key = key;
+  this.url = url;
+
+  if (this.url) {
+    return this;
+  }
+
+  var regexMatch;
   if ((regexMatch = prefix.match(string.REGEX_LITERAL_REGEX)) !== null) {
     this.pattern = new RegExp(regexMatch[1], regexMatch[2]);
   } else {
@@ -50,7 +57,10 @@ External.prototype._read = function(){
     return this.push(null);
   }
 
-  if (this.pattern) {
+  if (this.url) {
+    url = this.url;
+    this.key = 'arbitrary';
+  } else if (this.pattern) {
     url = this.image.path;
 
     if (!this.pattern.test(url)) {

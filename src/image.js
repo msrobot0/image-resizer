@@ -64,6 +64,7 @@ Image.prototype.parseImage = function(request) {
   const query = request.query || {};
   this.format = query.format || '';
   this.outputFormat = query.outputFormat || '';
+  this.query = query;
 };
 
 // Determine the file path for the requested image
@@ -106,13 +107,23 @@ Image.prototype.getFile = function(){
       streamType = env.DEFAULT_SOURCE,
       Stream = null;
 
+  if (this.query.url) {
+    const Stream = sources.external;
+    const url = this.query.url;
+    return new Stream(this, null, null, url);
+  }
+
   // look to see if the request has a specified source
   if (_.has(this.modifiers, 'external')){
     if (_.has(sources, this.modifiers.external)){
       streamType = this.modifiers.external;
     } else if (_.has(env.externalSources, this.modifiers.external)) {
       Stream = sources.external;
-      return new Stream(this, this.modifiers.external, env.externalSources[this.modifiers.external]);
+      return new Stream(
+        this,
+        this.modifiers.external,
+        env.externalSources[this.modifiers.external]
+      );
     }
   }
 
