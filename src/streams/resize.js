@@ -68,7 +68,10 @@ module.exports = function (options = {}) {
       break;
 
     case 'resize':
-      r.resize(image.modifiers.width, image.modifiers.height);
+      r.resize(image.modifiers.width, image.modifiers.height, {
+          kernel: sharp.kernel.lanczos2,
+          interpolator: sharp.interpolator.nohalo
+      });
       r.max();
       r.toBuffer(resizeResponse);
       break;
@@ -85,9 +88,10 @@ module.exports = function (options = {}) {
 
         // resize then crop the image
         r.resize(
-            d.resize.width,
-            d.resize.height
-          ).extract({
+            d.resize.width, d.resize.height, {
+                kernel: sharp.kernel.lanczos2,
+                interpolator: sharp.interpolator.nohalo
+            }).extract({
             left: d.crop.x,
             top: d.crop.y,
             width: d.crop.width,
@@ -109,16 +113,20 @@ module.exports = function (options = {}) {
 
         switch(image.modifiers.crop){
         case 'fit':
-          r.resize(image.modifiers.width, image.modifiers.height);
+          r.resize(image.modifiers.width, image.modifiers.height, {
+              kernel: sharp.kernel.lanczos2,
+              interpolator: sharp.interpolator.nohalo
+          });
           r.max();
           break;
         case 'fill':
           d = dims.cropFill(image.modifiers, size);
 
           r.resize(
-              d.resize.width,
-              d.resize.height
-            ).extract({
+              d.resize.width, d.resize.height, {
+                  kernel: sharp.kernel.lanczos2,
+                  interpolator: sharp.interpolator.nohalo
+              }).extract({
               left: d.crop.x,
               top: d.crop.y,
               width: d.crop.width,
@@ -144,14 +152,17 @@ module.exports = function (options = {}) {
           });
           break;
         case 'scale':
-          r.resize(image.modifiers.width, image.modifiers.height);
+          r.resize(image.modifiers.width, image.modifiers.height, {
+              kernel: sharp.kernel.lanczos2,
+              interpolator: sharp.interpolator.nohalo
+          });
           r.ignoreAspectRatio();
           break;
         case 'pad':
-          r.resize(
-            image.modifiers.width,
-            image.modifiers.height
-          ).background(env.IMAGE_PADDING_COLOR || 'white').embed();
+          r.resize( image.modifiers.width, image.modifiers.height, {
+              kernel: sharp.kernel.lanczos2,
+              interpolator: sharp.interpolator.nohalo
+          }).background(env.IMAGE_PADDING_COLOR || 'white').embed();
         }
 
         r.toBuffer(resizeResponse);
