@@ -3,6 +3,7 @@ node_modules/
 .env
 ./filters/
 ./sources/
+.idea/
 npm-debug.log
 named_modifiers.json
 test/sample_images/dont-version*/process.yml
